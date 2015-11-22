@@ -1,13 +1,13 @@
 library(dplyr)
 
 # Function that creates a path of the description file
-# (e.g., feature list, activity labels).
+# (e.g., feature list, activity labels)
 desc.file.path <- function(name) {
   return(sprintf("../UCI HAR Dataset/%s.txt", name))
 }
 
 # Function that creates a path of the file belonging to a data set
-# (train or test).
+# (train or test)
 dataset.file.path <- function(dataset, name) {
   return(sprintf("../UCI HAR Dataset/%s/%s_%s.txt", dataset, name, dataset))
 }
@@ -26,8 +26,8 @@ load.and.prepare.dataset <- function(dataset) {
   activities <- read.table(dataset.file.path(dataset, 'y'))
   # Processing of the data according steps 2-4
   activities <- lapply(activities, function(idx) activity.labels[idx])
-  data <- cbind(subjects, activities, data[, activities.to.select])
-  colnames(data)[1:2] = c('subject', 'activity')
+  data <- cbind(activities, subjects, data[, activities.to.select])
+  colnames(data)[1:2] = c('activity', 'subject')
   return(data)
 }
 
@@ -36,3 +36,7 @@ load.and.prepare.dataset <- function(dataset) {
 
 # Combine data from two datasets (step 1 of the task)
 data <- rbind(load.and.prepare.dataset('train'), load.and.prepare.dataset('test'))
+
+# Creates a second, independent tidy data set with the average of each variable
+# for each activity and each subject (step 5 of the task)
+result <- summarize_each(group_by(data, activity, subject), funs(mean))
