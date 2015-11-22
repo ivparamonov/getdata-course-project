@@ -3,13 +3,13 @@ library(dplyr)
 # Function that creates a path of the description file
 # (e.g., feature list, activity labels)
 desc.file.path <- function(name) {
-  return(sprintf("../UCI HAR Dataset/%s.txt", name))
+  return(sprintf("UCI HAR Dataset/%s.txt", name))
 }
 
 # Function that creates a path of the file belonging to a data set
 # (train or test)
 dataset.file.path <- function(dataset, name) {
-  return(sprintf("../UCI HAR Dataset/%s/%s_%s.txt", dataset, name, dataset))
+  return(sprintf("UCI HAR Dataset/%s/%s_%s.txt", dataset, name, dataset))
 }
 
 # Constants
@@ -40,3 +40,7 @@ data <- rbind(load.and.prepare.dataset('train'), load.and.prepare.dataset('test'
 # Creates a second, independent tidy data set with the average of each variable
 # for each activity and each subject (step 5 of the task)
 result <- summarize_each(group_by(data, activity, subject), funs(mean))
+
+# Output the result to the file and to the screen
+write.table(result, file = 'result.txt', row.name = FALSE)
+print(result)

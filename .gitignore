@@ -13,3 +13,6 @@ vignettes/*.html
 vignettes/*.pdf
 
 *~
+
+UCI HAR Dataset
+result.txt
